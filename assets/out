@@ -27,7 +27,7 @@ Message=$(jq -r '.params.message // ""' <$SCRIPT_INPUT)
 # debug params
 #echo message: $Message 1>&2
 
-curl "https://api.telegram.org/$BotId/sendMessage?chat_id=$ChatId&text=Build name: $BUILD_NAME, id: $BUILD_ID, job name: $BUILD_JOB_NAME, pipeline: $BUILD_PIPELINE_NAME, message: $Message" 1>&2
+curl "https://api.telegram.org/$BotId/sendMessage?chat_id=$ChatId&text=pipeline: $BUILD_PIPELINE_NAME, job: $BUILD_JOB_NAME, build number: $BUILD_NAME, message: $Message" 1>&2
 
 OUTPUT_STRING="{ \"version\": { \"ref\": \"none\"} }"
 echo $OUTPUT_STRING
