@@ -14,6 +14,13 @@ resource_types:
     repository: chemist/concourse-telegram-resource
     tag: latest
 
+resources:
+- name: telegram
+  type: bot
+  source:
+    bot: {{bot}}
+    chat_id: {{telegram-chat-id}}
+
 jobs:
 - name: test
   plan:
