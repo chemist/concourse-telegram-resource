@@ -1,0 +1,35 @@
+#!/bin/bash
+
+SRC_DIR=$1
+echo source dir 1>&2
+echo $SRC_DIR 1>&2
+
+echo Environment 1>&2
+echo $BUILD_ID 1>&2
+echo $BUILD_NAME 1>&2
+echo $BUILD_JOB_NAME 1>&2
+echo $BUILD_PIPELINE_NAME 1>&2
+echo $ATC_EXTERNAL_URL 1>&2
+
+# write STDIN to file
+SCRIPT_INPUT='/tmp/input'
+cat > $SCRIPT_INPUT <&0 
+
+# debug input
+#echo stdin 1>&2
+#cat $SCRIPT_INPUT 1>&2
+
+# input must be like {"source":{"bot":"","chat_id":""},"params":{"message":""}}
+BotId=$(jq -r '.source.bot // ""' <$SCRIPT_INPUT)
+ChatId=$(jq -r '.source.chat_id // ""' <$SCRIPT_INPUT)
+Message=$(jq -r '.params.message // ""' <$SCRIPT_INPUT)
+
+# debug params
+#echo message: $Message 1>&2
+
+curl "https://api.telegram.org/$BotId/sendMessage?chat_id=$ChatId&text=$Message" 1>&2
+
+OUTPUT_STRING="{ \"version\": { \"ref\": \"none\"} }"
+echo $OUTPUT_STRING
+exit 0
+
